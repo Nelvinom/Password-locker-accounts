@@ -43,7 +43,7 @@ def delete_credential(credentials):
 def main():
 
     while True:
-        print("Welcome to PassWord Locker.")
+        print("Hi! Welcome to PassWord Locking app.")
         print('\n')
         print("Use these short codes to select an option: Create New User use 'cu': Login to your account use 'lg' or 'ex' to exit password locker")
         short_code = input().lower()
