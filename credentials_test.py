@@ -1,59 +1,50 @@
 import unittest
-from user import Credentials
+from credentials import Credentials
 
 
 class TestCredentials(unittest.TestCase):
-
+    """Test class that defines test cases for the Credentials class behavior
+    """
 
     def setUp(self):
-        self.new_credentials = Credentials("aligedi","instagram","ali","aligedi")
+        """Set up method to run befor before each test case"""
+        self.new_credentials = Credentials("Facebook", "12345")
+
+    def test_credentials_instance(self):
+        """Method that tests whether the new_credentials have been instantiated correctly"""
+        self.assertEqual(self.new_credentials.account_name, "Facebook")
+        self.assertEqual(self.new_credentials.account_password, "12345")
+
+    def test_save_credentials(self):
+        """Method that tests whether the new credential created has been saved"""
+        self.new_credentials.save_credentials()
+        self.assertEqual(len(Credentials.credentials_list), 1)
+
+    def test_save_multiple_credentials(self):
+        """Method that saves multiple credentials to credentials_list"""
+        self.new_credentials.save_credentials()
+        new_test_credential = Credentials("Twitter", "56789")
+        new_test_credential.save_credentials()
+        self.assertEqual(len(Credentials.credentials_list), 2)
 
     def tearDown(self):
+        """Method that clears the credentials_list after every test to ensure that there is no error"""
         Credentials.credentials_list = []
 
+    def test_find_credential_by_name(self):
+        """Test to check if we can find credentials and display information"""
+        self.new_credentials.save_credentials()
+        new_test_credential = Credentials("Twitter", "56789")
+        new_test_credential.save_credentials()
 
-    def test_init(self):
+        found_credential = Credentials.find_by_name("Twitter")
 
+        self.assertEqual(found_credential.account_name, new_test_credential.account_name)
 
-        self.assertEqual(self.new_credentials.view_passward,"aligedi")
-        self.assertEqual(self.new_credentials.account,"instagram")
-        self.assertEqual(self.new_credentials.login,"ali")
-        self.assertEqual(self.new_credentials.passward,"aligedi")
+    def test_display_all_credentials(self):
+        """TestCase to test whether all contacts can be displayed"""
+        self.assertEqual(Credentials.display_credentials(), Credentials.credentials_list)
 
-    def test_save_credential(self):
-
-        self.new_credentials.save_credential()
-        self.assertEqual(len(Credentials.credentials_list),1)
-    def test_multiple_credential(self):
-
-
-        self.new_credentials.save_credential()
-        self.test_credentials = Credentials("osmanhared","instagram","osman","osmanhared")
-        self.test_credentials.save_credential()
-        self.assertEqual(len(Credentials.credentials_list),2)
-
-    def test_del_credential(self):
-
-
-        self.new_credentials.save_credential()
-        self.test_credentials = Credentials("osmanhared","instagram","osman","osmanhared")
-        self.test_credentials.save_credential()
-        self.new_credentials.del_credential()
-        self.assertEqual(len(Credentials.credentials_list),1)
-        
-    def test_display_credential(self):
-
-        self.assertEqual(Credentials.display_credentials(),Credentials.credentials_list)
-    
-    def test_exist_credential(self):
-
-
-        self.new_credentials.save_credential()
-        self.test_credentials = Credentials("osmanhared","instagram","osman","osmanhared")
-        self.test_credentials.save_credential()
-
-        credential_exists = Credentials.find_by_account("instagram")
-        self.assertTrue(credential_exists)
 
 if __name__ == '__main__':
     unittest.main()
